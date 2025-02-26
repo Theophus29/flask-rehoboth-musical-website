@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protected Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #444;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .logout-btn {
+            display: block;
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            background-color: #e74c3c;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Protected Page</h1>
+    </header>
+    <main>
+        <p>This page is accessible only to authenticated users. If you are seeing this page, it means you have an active session.</p>
+        <p>Click the button below to log out and terminate your session.</p>
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </main>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Payment Receipt</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .container-fluid {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .container-fluid h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .receipt-container {
+            margin-top: 80px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        .receipt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .receipt-header img {
+            height: 50px;
+        }
+
+        .receipt-details {
+            margin-top: 20px;
+        }
+
+        .receipt-details h1 {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .signature {
+            margin-top: 30px;
+            text-align: right;
+        }
+
+        .btn-download {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="{% static 'rehoboth/images/rehobothlogo.png' %}" alt="Brand Logo" style="height: 40px;">
+            </div>
+            <div class="col-md-6 text-right">
+                <h1>Rehoboth Musical Institution</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="receipt-container container mt-5">
+        <div class="receipt-header">
+            <div>
+                <img src="{% static 'rehoboth/images/rehobothlogo.png' %}" alt="Brand Logo">
+            </div>
+            <div>
+                <p>Rehoboth Musical Institution</p>
+                <p>12, Ramalinganar Street, Thiysgarajanagar, Tirunelveli</p>
+                <p>E-mail: rehobothmusicals@gmail.com</p>
+                <p>Contact Number: +91 8344451824</p>
+            </div>
+        </div>
+
+        <div class="receipt-details">
+            <h1>FEE RECEIPT</h1>
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" class="form-control" />
+            </div>
+            <p>Received with thanks from <strong>"[Name of the Student]"</strong> an amount of <strong>"[Amount]"</strong> only by:</p>
+            <div>
+                <button class="btn btn-outline-primary btn-sm">Cash</button>
+                <button class="btn btn-outline-secondary btn-sm">Digital</button>
+            </div>
+            <p>Remark: As account of <strong>"[Account Description]"</strong></p>
+            <p>From Date: <strong>"[Start Date]"</strong> To Date: <strong>"[End Date]"</strong></p>
+
+            <div class="signature">
+                <p>Received By</p>
+                <p>(Signature)</p>
+            </div>
+        </div>
+
+        <button class="btn btn-primary btn-download" onclick="downloadPDF()">Download as PDF</button>
+    </div>
+
+    <script>
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Add content to the PDF
+            doc.text("Fee Payment Receipt", 10, 10);
+            doc.text("Rehoboth Musical Institution", 10, 20);
+            doc.text("12, Ramalinganar Street, Thiysgarajanagar, Tirunelveli", 10, 30);
+            doc.text("E-mail: rehobothmusicals@gmail.com", 10, 40);
+            doc.text("Contact Number: +91 8344451824", 10, 50);
+
+            doc.text("Date: " + document.getElementById('date').value, 10, 70);
+            doc.text("Received with thanks from: [Name of the Student]", 10, 80);
+            doc.text("Amount: [Amount]", 10, 90);
+            doc.text("Payment Mode: Cash/Digital", 10, 100);
+            doc.text("Remark: [Account Description]", 10, 110);
+            doc.text("From Date: [Start Date] To Date: [End Date]", 10, 120);
+
+            doc.text("Received By", 10, 140);
+            doc.text("(Signature)", 10, 150);
+
+            // Save the PDF
+            doc.save("Fee_Receipt.pdf");
+        }
+    </script>
+</body>
+</html>
+    

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="{{ url_for('static', filename='images/rehobothlogo.png') }}" type="image/png">
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4; /* Light background */
+        }
+
+        .login-container {
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -10%);
+            background: #180161; /* Dark background to match your theme */
+            width: 380px;
+            padding: 50px 30px;
+            border-radius: 10px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        }
+
+        .login-form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        .login-form h2 {
+            font-size: 22.5px;
+            color: #180161;
+            text-align: center;
+        }
+
+        .form-group label {
+            font-size: 17px;
+            color: #180161;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 95%;
+            display: block;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            background-color: #000; /* Dark input background */
+            color: white; /* White text color for inputs */
+            border-bottom: 2px solid #555454;
+            margin: 1em 0;
+            outline: none;
+            font-size: 13px;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7); /* Placeholder color */
+            padding-left: 5px;
+        }
+
+        input:focus {
+            border-bottom-color: #180161; /* Underline color on focus */
+            transition: border-bottom-color 0.3s ease;
+        }
+
+        .form-group button {
+            width: 70%;
+            padding: 10px;
+            border: none;
+            border-radius: 15px;
+            margin: 1em auto;
+            display: block;
+            background: linear-gradient(135deg, #1e3c72, #2a5298); /* Dark blue gradient */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.5s ease-in-out;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        .form-group button:hover {
+            background: linear-gradient(135deg, #2a5298, #1e3c72); /* Reversed gradient on hover */
+            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <form action="{{ url_for ('auth.admin_login') }}" method="POST">
+                <h2>ADMIN LOGIN</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <p style="color: red; text-align: center;">{{ messages[0] }}</p>
+                    {% endif %}
+                {% endwith %}
+                <div class="form-group">
+                    <label for="username"><b>Username</b></label>
+                    <input type="text" name="username" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password"><b>Password</b></label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <br>
+                <div class="form-group">
+                    <button type="submit">LOGIN</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

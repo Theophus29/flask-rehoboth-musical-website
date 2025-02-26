@@ -1,0 +1,225 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Course</title>
+    <script src="{% static 'rehoboth/js/script.js' %}"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f7;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+            color: white;
+            display: inline;
+        }
+
+        .sidebar {
+            background-color: #00264d;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #00509e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 60px 20px;
+            background-color: #f0f4f7;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .course-table {
+            width: 80%;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .course-table table {
+            width: 100%;
+        }
+
+        .course-table th, .course-table td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .course-table th {
+            background-color: #f0f0f0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .course-table td {
+            font-size: 16px;
+        }
+
+        .update-btn {
+            padding: 10px 20px;
+            background-color: #00509e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .update-btn:hover {
+            background-color: white;
+            color: #00509e;
+            border: 1px solid #00509e;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .course-table {
+                width: 100%;
+            }
+
+            .sidebar.show {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <img src="{% static 'rehoboth/images/rehobothlogo.png' %}" alt="Brand Logo" style="height: 40px;">
+            <h1>Rehoboth Musical Institution</h1>
+            <button class="navbar-toggler" type="button" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-columns"></i>Dashboard</a></li>
+            <li><a href="{% url 'batches' %}"><i class="fas fa-users"></i> Batches</a></li>
+            <li><a href="{% url 'student' %}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a href="{% url 'fee_management' %}"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+            <li><a href="{% url 'enquiry' %}"><i class="fas fa-envelope"></i> Enquiries</a></li>
+            <li><a href="{% url 'staff_manager' %}"><i class="fas fa-users-cog"></i> Staff</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <table class="course-table">
+            <thead>
+                <tr>
+                    <th colspan="2">Course Updation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="{% url 'edit_course' course.id %}" method="POST">
+                    {% csrf_token %}
+                    <tr>
+                        <td>No</td>
+                        <td><input type="text" name="course_id" class="form-control" value="{{ course.id }}" readonly></td>
+                    </tr>
+                    <tr>
+                        <td>Course Photo</td>
+                        <td><input type="text" name="course_pic" class="form-control" value="{{ course.photo }}" required></td>
+                    </tr>
+                    <tr>
+                        <td>Course Name</td>
+                        <td><input type="text" name="course_name" class="form-control" value="{{ course.title }}" required></td>
+                    </tr>
+                    <tr>
+                        <td>Course Description</td>
+                        <td><textarea class="form-control" name="description" id="Course" rows="3" required>{{ course.description }}</textarea></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <button type="submit" class="update-btn">Update Course</button>
+                        </td>
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+    </script>
+    <script src="{% static 'rehoboth/js/script.js' %}"></script>
+</body>
+</html>

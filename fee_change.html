@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Fee</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/rehobothlogo.png') }}" type="image/png">
+    <script src="{{ url_for('static', filename='script/script.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f0f4f7;
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            color: black;
+        }
+
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .sidebar {
+            background-color: #00264d;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #00509e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 400px;
+            padding: 40px;
+            background-color: #f0f4f7;
+            min-height: 100vh;
+            padding-top: 100px;
+        }
+
+        .fee-details {
+            width: 80%;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #ddd; /* Optional: For a clean separation */
+        }
+
+        .fee-details h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 350px;
+        }
+
+        /* Table */
+        .fee-table {
+            width: 80%;
+            max-width: 1000px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .fee-table table {
+            width: 100%;
+        }
+
+        .fee-table th, .fee-table td {
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .fee-table th {
+            background-color: #f0f0f0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .fee-table td {
+            font-size: 16px;
+        }
+
+        .fee-table td button {
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+
+        .fee-table td .edit{
+            background-color: green;
+            cursor: pointer;
+        }
+        
+        .fee-table td .edit:hover {
+            background-color: #fff;
+            color: green;
+            border: 1px solid green;
+        }
+
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .navbar h1 {
+                font-size: 20px;
+            }
+
+            .sidebar.show {
+                display: block;
+            }
+
+            .fee-table {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar with Sidebar Toggle Button for Mobile -->
+   <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <img src="{{ url_for('static', filename='images/rehobothlogo.png') }}" alt="Brand Logo" style="height: 40px;">
+            <h1>Rehoboth Musical Institution</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{url_for('admin.index')}}"><i class="fas fa-home"></i>Home</a></li>
+            <li><a href="{{url_for('admin.dashboard')}}"><i class="fas fa-columns"></i> Dashboard</a></li>
+            <li><a href="{{url_for('admin.settings')}}"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="{{url_for('admin.course')}}"><i class="fas fa-book"></i> Courses</a></li>
+            <li><a href="{{url_for('admin.fee_change')}}"><i class="fas fa-money-bill-wave"></i> Fee Management</a></li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        <!-- Batch Details Section -->
+        <div class="fee-details">
+            <h2>Fee Details</h2>
+        </div>
+
+        <!-- Table Section -->
+        <div class="fee-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>NO</th>
+                        <th>Monthly</th>
+                        <th>Term</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for fee in fees %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ fee.monthly }}</td>
+                        <td>{{ fee.term }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_fees', fee_id=fee.id) }}">
+                                <button class="edit" id="edit_btn">Edit</button>
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4">No fees available.</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+    </script>
+</body>
+</html>

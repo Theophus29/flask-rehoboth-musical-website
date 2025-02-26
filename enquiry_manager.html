@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{url_for('static', filename='script/script.js')}}"></script>
+    <link rel="icon" href="{{ url_for('static', filename='images/rehobothlogo.png') }}" type="image/png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <title>Enquiry</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f7;
+        }
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .sidebar {
+            background-color: #00264d;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #00509e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+        .main-content {
+            margin-left: 270px;
+            padding: 80px 40px 40px 40px;
+            background-color: #f0f4f7;
+            min-height: 100vh;
+        }
+
+        td {
+            text-align: center;         /* Center content horizontally in the table cell */
+            vertical-align: middle;     /* Center content vertically in the table cell */
+        }
+
+        .checkboxcontainer {
+            display: flex;               /* Use flexbox for centering */
+            justify-content: center;     /* Center horizontally */
+            align-items: center;         /* Center vertically */
+            height: 100%;                /* Make the container take full height of the cell */
+        }
+
+
+        .delete-button {
+            background-color: gray; /* Light gray for disabled state */
+            color: white; /* White text */
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: not-allowed; /* Show not-allowed cursor when disabled */
+            font-size: 14px;
+            text-align: center;
+            opacity: 0.6; /* Slight transparency for the disabled state */
+            transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+        }
+
+        .delete-button:disabled {
+            cursor: not-allowed; /* Change cursor to not-allowed when disabled */
+            opacity: 0.6; /* Make it slightly transparent */
+        }
+
+        .delete-button.active {
+            background-color: #e74c3c; /* Bright red for active state */
+            color: white; /* White text for visibility */
+            cursor: pointer; /* Show pointer cursor when enabled */
+            opacity: 1; /* Fully opaque when active */
+        }
+
+        .delete-button:active {
+            background-color: #c0392b; /* Darker red when button is pressed */
+        }
+
+        .delete-button:hover {
+            transform: scale(1.1); /* Slightly enlarge on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <img src="{{ url_for('static', filename='images/rehobothlogo.png') }}" alt="Brand Logo" style="height: 40px;">
+            <h1>Rehoboth Musical Institution</h1>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{url_for('admin.index')}}"><i class="fas fa-columns"></i> Dashboard</a></li>
+            <li><a href="{{url_for('admin.batch')}}"><i class="fas fa-users"></i> Batches</a></li>
+            <li><a href="{{url_for('student.student')}}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a href="{{url_for('admin.fee')}}"><i class="fas fa-money-bill-wave"></i> Fees</a></li>
+            <li><a href="{{url_for('admin.enquiry')}}"><i class="fas fa-envelope"></i> Enquiries </a></li>
+            <li><a href="{{url_for('staff.staff')}}"><i class="fas fa-users-cog"></i> Staff</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <h2 class="text-center">Enquiry Page</h2>
+        <div class="elevated-box">
+            <div id="alertBox" class="alert alert-dismissible fade" style="display: none;">
+                <button type="button" class="close" onclick="closeAlert()">&times;</button>
+                <span id="alertMessage"></span>
+            </div>
+    
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Message</th>
+                            <th>Mark as Read</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enquiry in enquiries %}
+                        <tr>
+                            <td class="enquiry-count">{{ loop.index }}</td>
+                            <td>{{ enquiry.name }}</td>
+                            <td>{{ enquiry.phone }}</td>
+                            <td>{{ enquiry.email }}</td>
+                            <td>{{ enquiry.message }}</td>
+                            <td>
+                                <button class="markasreadbtn btn btn-success" onclick="markAsRead(this)">Mark as Read</button>
+                                <div class="checkboxcontainer" style="display: none;">
+                                    <input type="checkbox" class="read-checkbox" checked />
+                                </div>
+                            </td>
+                            <td class="delete-cell">
+                                <button class="delete-button" disabled data-id="#" onclick="deleteEnquiry(this)">Delete</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center">No enquiries found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Functions -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

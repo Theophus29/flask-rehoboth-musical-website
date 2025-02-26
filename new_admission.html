@@ -1,0 +1,614 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Admission</title>
+    <script src="{% static 'rehoboth/js/script.js' %}"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f7;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .sidebar {
+            background-color: #00264d;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #00509e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 60px 20px; /* Adjust padding for compactness */
+            background-color: #f0f4f7;
+            min-height: 100vh;
+            padding-top: 80px;
+        }
+
+        .container {
+            max-width: 600px; /* Set a maximum width for the main content */
+            margin: auto; /* Center the container */
+            padding: 20px; /* Add padding inside the container */
+            background-color: #ffffff; /* Optional: set background color for contrast */
+            border-radius: 10px; /* Optional: add rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: add a subtle shadow */
+        }
+        /* Form styling */
+        .container-top {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input[type="date"] {
+            width: 100%; /* Make the input responsive */
+            padding: 10px; /* Add padding for better usability */
+           
+            box-sizing: border-box; /* Include padding and border in the element's total width */
+            font-size: 16px; /* Set a comfortable font size */
+            transition: border-color 0.3s; /* Smooth transition on focus */
+        }
+
+        .form-group input[type="date"]:focus {
+            border-color: #007bff; /* Change border color on focus */
+            outline: none; /* Remove the default outline */
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Optional shadow for focus effect */
+        }
+
+        
+        .profile-pic-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        img {
+            max-width: 200px;
+            margin-top: 10px;
+        }
+        .msg {
+            color: green; /* Customize this as needed */
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        input[type="file"] {
+            margin-top: 10px;
+        }
+
+        #add-course-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: 0.3s ease-in-out;
+            border: none;
+        }
+
+        #add-course-btn:hover {
+            background-color: white;
+            border: 2px solid #218838;
+            color: black;
+            transform: scale(1.05);
+        }
+
+        #recourse-course-btn {
+            background-color: #f64012;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: 0.3s ease-in-out;
+            border: none;
+        }
+
+        #recourse-course-btn:hover {
+            background-color: white;
+            border: 1px solid red;
+            color: black;
+            transform: scale(1.05);
+        }
+        #submit-btn {
+            background-color: rgb(43, 50, 191);
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+            transition: 0.3s ease-in-out;
+            border: none;
+            font-weight: bold;
+        }
+
+        #submit-btn:hover {
+            background-color: white;
+            border: 2px solid rgb(43, 50, 191);
+            transform: scale(1.05);
+            color: black;
+            font-weight: bold;
+        }
+
+
+        @media (max-width: 576px) {
+            /* Styles for small screens */
+            .form-group input[type="date"] {
+                font-size: 14px; /* Adjust font size for smaller screens */
+                padding: 8px; /* Reduce padding for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+   <!-- Navbar -->
+   <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <img src="{% static 'rehoboth/images/rehobothlogo.png' %}" alt="Brand Logo" style="height: 40px;">
+            <h1>Rehoboth Musical Institution</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+<!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{% url 'dashboard' %}"><i class="fas fa-columns"></i>Dashboard</a></li>
+            <li><a href="{% url 'student' %}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a href="{% url 'new_admission' %}"><i class="fas fa-users"></i> New Admission</a></li>
+            <li><a href="{% url 'all_students' %}"><i class="fas fa-user-graduate"></i> All Students</a></li>
+            <li><a href="{% url 'inactive_students' %}"><i class="fas fa-calendar-check"></i> Inactive Students</a></li>
+        </ul>
+    </nav>
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-top">
+            Student Registration
+        </div>
+
+        <div class="container border p-4">
+            <form action="{% url 'new_admission' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="profile-container">
+                    <h3>Upload Your Picture</h3>
+                    <input type="file" class="form-control-file" id="profilePicture" name="profile_picture" accept="image/*" onchange="previewImage()" required>
+                    <img id="preview" src="{{ file_url }}" alt="Profile Picture Preview" style="max-width: 200px; display: block; margin-top: 10px;">
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="firstname">First Name *</label>
+                            <input type="text" class="form-control" id="firstname" name="first_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="lastname">Last Name</label>
+                            <input type="text" class="form-control" id="lastname" name="last_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender *</label>
+                    <select class="form-control" id="gender" name="gender" required>
+                        <option value="select" disabled selected>--Select--</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date of Birth *</label>
+                    <input type="date" name="date_of_birth" id="date" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="occupation" disabled selected>Occupation *</label>
+                    <select class="form-control" id="occupation" name="occupation" required>
+                        <option value="select" disabled selected>--Select--</option>
+                        <option value="School">School</option>
+                        <option value="College">College</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fathername">Father's Name</label>
+                            <input type="text" class="form-control" id="fathername" name="father_name" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="mothername">Mother's Name</label>
+                            <input type="text" class="form-control" id="mothername" name="mother_name" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mobileno1">Mobile Number 1</label>
+                    <input type="text" class="form-control" name="mobile_no1" id="mobileno1" required>
+                </div>
+                <div class="form-group">
+                    <label for="mobileno2">Mobile Number 2</label>
+                    <input type="text" class="form-control" name="mobile_no2" id="mobileno2">
+                </div>
+                <div class="form-group">
+                    <label for="watno">Whatsapp Number</label>
+                    <input type="text" class="form-control" name="whatsapp_no" id="watno" required>
+                </div>
+                <div class="form-group">
+                    <label for="emailid">Email ID</label>
+                    <input type="email" class="form-control" name="email_id" id="emailid" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea class="form-control" name="address" id="address" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" class="form-control" name="pincode" id="pincode" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">State</label>
+                    <select class="form-control" name="state" id="state" required>
+                    </select>
+                </div>
+                <hr>
+                <h2 class="mt-4">Course Details</h2>
+            
+                <!-- Dynamic Course Dropdown -->
+                <div class="form-group">
+                    <label for="course">Course*</label>
+                    <select class="form-control" name="first_course" id="course" required>
+                        <option value="select" disabled selected>--Select--</option>
+                        {% for courses in Course %}
+                        <option value="{{ courses.id }}">{{ courses.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                               
+                <div class="form-group" id="fee-type-container">
+                    <label for="fee-type">Fee Type*</label>
+                    <select class="form-control" name="fee_type" id="fee-type" required onchange="replaceDropdown(this.value)">
+                        <option value="select" disabled selected>--Select--</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Term_Fees">Term Fees</option>
+                    </select>
+                </div>
+                
+                <div id="fees_container"></div>
+                
+                <div class="form-group">
+                    <label for="startdate">Start Date</label>
+                    <input type="date" name="start_date" id="startdate" class="form-control">
+                </div>
+                <button type="button" id="add-course-btn" onclick="addcourse(this)">Add Course</button>
+                <div id="course_container" class="hidden-div"></div>
+            
+                <div class="form-group mt-3">
+                    <label for="remarks">Remarks</label>
+                    <textarea class="form-control" id="remarks" name="remarks">N/A</textarea>
+                </div>
+            
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <p style="color:red;">{{ field }}: {{ error }}</p>
+                    {% endfor %}
+                {% endfor %}
+                <button type="submit" id="submit-btn">Submit</button>
+            </form>            
+        </div>
+    </div>
+    <script>
+        function previewImage() {
+            const fileInput = document.getElementById('profilePicture');
+            const preview = document.getElementById('preview');
+        
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block'; // Show the preview
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+        function populateStates() {
+            const states = [
+                "--Select--","Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+                "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+                "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+                "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+                "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura",
+                "Uttar Pradesh", "Uttarakhand", "West Bengal", "Andaman and Nicobar Islands",
+                "Chandigarh", "Dadra and Nagar Haveli and Daman and Diu", "Lakshadweep",
+                "Delhi", "Puducherry"
+            ];
+
+            const selectState = document.getElementById("state");
+
+            // Clear existing options (if any)
+            selectState.innerHTML = '';
+
+            // Populate the select element with options
+            states.forEach(state => {
+                const option = document.createElement("option");
+                option.value = state; // Set the value of the option to the state name
+                option.textContent = state; // Set the displayed text to the state name
+                selectState.appendChild(option); // Append the option to the select element
+            });
+        }
+        // Call the function on page load
+        window.onload = populateStates;
+
+        function replaceDropdown(feeType) {
+            let feeTypeElement = document.getElementById("fee-type");
+            let selectedFeeType = feeTypeElement ? feeTypeElement.value : "select";
+
+            let discountElement = document.getElementById("discount");
+            let selectedDiscount = discountElement ? discountElement.value : "0";
+
+            let feesContainer = document.getElementById("fees_container");
+
+            // Clear the existing content
+            feesContainer.innerHTML = '';
+
+            if (feeType === "Monthly") {
+                feesContainer.innerHTML = `
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="fee-type">Fee Type*</label>
+                            <select class="form-control" name="fee_type" id="fee-type" required onchange="replaceDropdown(this.value)">
+                                <option value="select" disabled selected ${selectedFeeType === "select" ? "selected" : ""}>--Select--</option>
+                                <option value="Monthly" ${selectedFeeType === "Monthly" ? "selected" : ""}>Monthly</option>
+                                <option value="Term_Fees" ${selectedFeeType === "Term_Fees" ? "selected" : ""}>Term</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="discount">Discount</label>
+                            <select class="form-control" name="discount" id="discount" onchange="calculateDiscount()">
+                                <option value="0" ${selectedDiscount === "0" ? "selected" : ""}>0%</option>
+                                <option value="10" ${selectedDiscount === "10" ? "selected" : ""}>10%</option>
+                                <option value="25" ${selectedDiscount === "25" ? "selected" : ""}>25%</option>
+                                <option value="50" ${selectedDiscount === "50" ? "selected" : ""}>50%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fees-entry">
+                        <label for="fees">Fees</label>
+                        <input type="text" class="form-control" id="monthly_fees" name="fees" value="1500" readonly>
+                    </div>
+                `;
+            } else if (feeType === "Term_Fees") {
+                feesContainer.innerHTML = `
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label for="fee-type">Fee Type*</label>
+                            <select class="form-control" name="fee_type" id="fee-type" required onchange="replaceDropdown(this.value)">
+                                <option value="select" ${selectedFeeType === "select" ? "selected" : ""} disabled selected>--Select--</option>
+                                <option value="Monthly" ${selectedFeeType === "Monthly" ? "selected" : ""}>Monthly</option>
+                                <option value="Term_Fees" ${selectedFeeType === "Term_Fees" ? "selected" : ""}>Term</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="month">Number of Months</label>
+                            <input class="form-control" type="number" name="month" id="month" min="1" onchange="calculateDiscount()">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="discount">Discount</label>
+                            <select class="form-control" name="discount" id="discount" onchange="calculateDiscount()">
+                                <option value="0" ${selectedDiscount === "0" ? "selected" : ""} disabled selected>0%</option>
+                                <option value="10" ${selectedDiscount === "10" ? "selected" : ""}>10%</option>
+                                <option value="25" ${selectedDiscount === "25" ? "selected" : ""}>25%</option>
+                                <option value="50" ${selectedDiscount === "50" ? "selected" : ""}>50%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fees-entry">
+                        <label for="fees">Total Fees</label>
+                        <input type="text" class="form-control" id="term_fees" name="fees" value="0" readonly>
+                    </div>
+                `;
+            }
+        }
+
+        function calculateDiscount() {
+            const feeType = document.getElementById("fee-type").value;
+            const discount = parseInt(document.getElementById("discount").value || 0);
+            let baseFee = 0;
+
+            if (feeType === "Monthly") {
+                baseFee = 1500;
+                document.getElementById("monthly_fees").value = (baseFee - (baseFee * discount / 100)).toFixed(2);
+            } else if (feeType === "Term_Fees") {
+                const months = parseInt(document.getElementById("month").value || 1);
+                baseFee = 1500 * months;
+                document.getElementById("term_fees").value = (baseFee - (baseFee * discount / 100)).toFixed(2);
+            }
+        }
+
+        function addcourse(button) {
+            const courseDiv = document.createElement('div');
+            courseDiv.className = 'course-entry mt-3';
+            courseDiv.innerHTML = `
+                <h4>Course</h4>
+                <div class="form-group">
+                    <label for="course">Course*</label>
+                    <select class="form-control" name="second_course" id="course" required>
+                        <option value="select" disabled selected>--Select--</option>
+                        {% for courses in Course %}
+                        <option value="{{ courses.id }}">{{ courses.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+               
+                <div class="form-group">
+                    <label for="fee-type">Fee Type*</label>
+                    <select class="form-control" name="fee-type" onchange="replaceDropDown(this)" required>
+                        <option value="select" disabled selected>--Select--</option>
+                        <option value="Monthly">Monthly</option>
+                        <option value="Term_Fees">Term</option>
+                    </select>
+                </div>
+                <div id="fees_container"></div>
+                
+                <div class="form-group">
+                    <label for="startdate">Start Date</label>
+                    <input type="date" name="startdate" class="form-control">
+                </div>
+                <button type="button" onclick="remove_course(this)" class="btn btn-danger mt-2">Remove Course</button>
+            `;
+            document.getElementById('course_container').appendChild(courseDiv);
+        }
+
+        function remove_course(button) {
+            const courseDiv = button.parentElement;
+            courseDiv.remove();
+        }  
+
+        function replaceDropDown(feeTypeElement) {
+            const courseDiv = feeTypeElement.closest('.course-entry'); // Get the parent course div
+            const feesContainer = courseDiv.querySelector('#fees_container'); // Get the specific fees container
+
+            // Fetch current values to preserve selected options
+            const selectedFeeType = feeTypeElement.value || "select";
+            const discountElement = courseDiv.querySelector("#discount");
+            const selectedDiscount = discountElement ? discountElement.value : "0";
+
+            // Clear the existing fees container content
+            feesContainer.innerHTML = '';
+
+            if (selectedFeeType === "Monthly") {
+                feesContainer.innerHTML = `
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="fee-type">Fee Type*</label>
+                            <select class="form-control" name="fee_type" id="fee-type" required onchange="replaceDropdown(this)">
+                                <option value="select" ${selectedFeeType === "select" ? "selected" : "" } disabled selected>--Select--</option>
+                                <option value="Monthly" ${selectedFeeType === "Monthly" ? "selected" : ""}>Monthly</option>
+                                <option value="Term_Fees" ${selectedFeeType === "Term_Fees" ? "selected" : ""}>Term</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="discount">Discount</label>
+                            <select class="form-control" name="discount" id="discount" onchange="calculateDiscount(this)">
+                                <option value="0" ${selectedDiscount === "0" ? "selected" : ""}>0%</option>
+                                <option value="10" ${selectedDiscount === "10" ? "selected" : ""}>10%</option>
+                                <option value="25" ${selectedDiscount === "25" ? "selected" : ""}>25%</option>
+                                <option value="50" ${selectedDiscount === "50" ? "selected" : ""}>50%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fees-entry">
+                        <label for="fees">Fees</label>
+                        <input type="text" class="form-control" id="monthly_fees" name="fees" value="1500" readonly>
+                    </div>
+                `;
+            } else if (selectedFeeType === "Term_Fees") {
+                feesContainer.innerHTML = `
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label for="fee-type">Fee Type*</label>
+                            <select class="form-control" name="fee_type" id="fee-type" required onchange="replaceDropdown(this)">
+                                <option value="select" ${selectedFeeType === "select" ? "selected" : ""} disabled selected>--Select--</option>
+                                <option value="Monthly" ${selectedFeeType === "Monthly" ? "selected" : ""}>Monthly</option>
+                                <option value="Term_Fees" ${selectedFeeType === "Term_Fees" ? "selected" : ""}>Term</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="month">Number of Months</label>
+                            <input class="form-control" type="number" name="month" id="month" min="1" onchange="calculateDiscount(this)">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="discount">Discount</label>
+                            <select class="form-control" name="discount" id="discount" onchange="calculateDiscount(this)">
+                                <option value="0" ${selectedDiscount === "0" ? "selected" : ""}>0%</option>
+                                <option value="10" ${selectedDiscount === "10" ? "selected" : ""}>10%</option>
+                                <option value="25" ${selectedDiscount === "25" ? "selected" : ""}>25%</option>
+                                <option value="50" ${selectedDiscount === "50" ? "selected" : ""}>50%</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="fees-entry">
+                        <label for="fees">Total Fees</label>
+                        <input type="text" class="form-control" id="term_fees" name="fees" value="0" readonly>
+                    </div>
+                `;
+            }
+        }
+
+    </script>
+</body>
+</html>

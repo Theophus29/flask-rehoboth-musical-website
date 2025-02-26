@@ -1,0 +1,214 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/rehobothlogo.png') }}" type="image/x-icon">
+    <title>Edit Details</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            padding: 20px;
+        }
+        .top {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .top button {
+            background-color: rgb(43, 50, 191);
+            padding: 10px;
+            border-radius: 15px;
+            transition: 0.3s ease-in-out;
+            border: none;
+        }
+        .top button:hover {
+            transform: translateY(-5px);
+            background-color: rgb(30, 40, 150);
+        }
+        .top button label {
+            font-size: 20px;
+            color: white;
+        }
+        .container-top {
+            background-color: #f8f9fa;
+            padding: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px;
+        }
+        .profile-pic-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            margin-top: 20px;
+        }
+        #preview {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            display: block;
+            border-radius: 15px;
+        }
+        input[type="file"] {
+            margin-top: 10px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .regis-btn {
+            background-color: rgb(43, 50, 191);
+            padding: 10px;
+            border-radius: 15px;
+            transition: 0.3s ease-in-out;
+            border: none;
+            color: white;
+        }
+        .regis-btn:hover {
+            background-color: white;
+            border: 2px solid rgb(43, 50, 191);
+            color: black;
+        }
+
+        /* Additional media queries for small screens */
+        @media (max-width: 576px) {
+            .container {
+                padding: 10px;
+            }
+            #preview {
+                width: 100px;
+                height: 100px;
+            }
+            .form-group label {
+                font-size: 14px;
+            }
+            input, textarea, select {
+                font-size: 14px;
+            }
+            #staff-registration {
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top">
+        <a href="{{ url_for('staff.staff_manager')}}">
+            <button class="btn btn-primary">
+                <label for="back">Back</label>
+            </button>
+        </a>    
+    </header>
+
+    <div class="container-top">
+        Edit Your Details
+    </div>
+
+    <div class="container border p-4">
+        <form action="#">
+            <div class="row">
+                <div class="col-md-12 profile-pic-container">
+                    <img id="preview" src="{{ url_for('static', filename='images/default.png') }}" alt="Profile Picture Preview">
+                    <input type="file" class="form-control-file" id="profilePicture" accept="image/*" onchange="previewImage(event)">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobileno1">Mobile Number 1</label>
+                        <input type="text" class="form-control" name="mobileno" id="mobileno1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="mobileno2">Mobile Number 2</label>
+                        <input type="text" class="form-control" name="mobileno" id="mobileno2">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="watno">Whatsapp Number</label>
+                        <input type="text" class="form-control" name="watno" id="watno">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="emailid">Email ID</label>
+                        <input type="text" class="form-control" name="emailid" id="emailid">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" class="form-control" name="pincode" id="pincode">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" name="address" id="address" rows="3"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="state">State</label>
+                <select class="form-control" name="state" id="state">
+                    <option value="--select--">--select--</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button id="staff_registration" class="regis-btn">
+                    <label for="save">Save Changes</label>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap and JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>

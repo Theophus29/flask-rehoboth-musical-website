@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/rehobothlogo.png') }}" type="image/png">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <title>Inactive Students</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f7;
+        }
+
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+
+
+        /* Navbar */
+        .navbar {
+            background-color: #003366;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .sidebar {
+            background-color: #00264d;
+            color: white;
+            height: 100vh;
+            width: 250px;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #00509e;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 10px;
+        }
+
+        .main-content {
+            margin-left: 350px;
+            padding: 40px;
+            background-color: #f0f4f7;
+            min-height: 100vh;
+            padding-top: 250px;
+        }
+        .search-bar {
+            margin-top: 10px;
+        }
+        .student_table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .student_table th, .student_table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .student_table th {
+            background-color: #f4f4f4;
+        }
+        @media (max-width: 768px) {
+            .top button {
+                font-size: 16px;
+                padding: 8px;
+            }
+            .heading-container label {
+                font-size: 14px;
+            }
+            .search-bar .form-control {
+                font-size: 14px;
+            }
+            .student_table th, .student_table td {
+                padding: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <img src="{{ url_for('static', filename='images/rehobothlogo.png') }}" alt="Brand Logo" style="height: 40px;">
+            <h1>Rehoboth Musical Institution</h1>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="sidebar" aria-expanded="false" aria-label="Toggle navigation" onclick="toggleSidebar()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="{{url_for ('admin.dashboard')}}"><i class="fas fa-columns"></i>Dashboard</a></li>
+            <li><a href="{{url_for('student.student')}}"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a href="{{url_for('student.registration')}}"><i class="fas fa-users"></i> New Admission</a></li>
+            <li><a href="{{url_for('student.all_students')}}"><i class="fas fa-user-graduate"></i> All Students</a></li>
+            <li><a href="{{url_for('student.inactive_student')}}"><i class="fas fa-calendar-check"></i> Inactive Students</a></li>
+        </ul>
+    </nav>
+    <div class="main-content">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <label for="Students">InActive Students List</label>
+            </div>
+            <div class="col-12 col-md-6 text-md-right">
+                <div class="card-btn-add">
+                    <a href="{{url_for('student.all_students')}}">
+                        <button class="btn btn-secondary">
+                            <i class="fas fa-users"></i>
+                            View Active Students
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="search-bar">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="search-icon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+                <input type="text" id="searchBar" class="form-control" placeholder="Search by name">
+            </div>
+        </div>
+        <div class="student_table mt-3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Profile Picture</th>
+                        <th>First Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Add student rows here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
